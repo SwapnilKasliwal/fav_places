@@ -24,25 +24,31 @@ class PlacesList extends StatelessWidget {
               ),
         ],
       ),
-      body: Consumer<GreatPlaces>(
-        child: Center(
-          child: const Text('Got no places yet, Start adding some!'),
-        ),
-        builder: (context, greatPlaces, child)=>
-            greatPlaces.placesList.length<=0 ? child! :
-            ListView.builder(itemCount: greatPlaces.placesList.length,
-                itemBuilder: (context, index){
-              return ListTile(leading: CircleAvatar(
-                backgroundImage: FileImage(greatPlaces.placesList[index].image!),
-              ),
-                  title: Text(greatPlaces.placesList[index].title!),
-                onTap: (){
-                //Go to details Page
-                },
-                contentPadding: EdgeInsets.all(10),
-              );
-                })
+      body: FutureBuilder(
+        future: Provider.of<GreatPlaces>(context, listen: false).readAndFetchData(),
+          builder: (context, snapshot) => snapshot.connectionState == ConnectionState.waiting?
+              Center(child: CircularProgressIndicator(),
+              ):
+        Consumer<GreatPlaces>(
+          child: Center(
+            child: const Text('Got no places yet, Start adding some!'),
+          ),
+          builder: (context, greatPlaces, child)=>
+              greatPlaces.placesList.length<=0 ? child! :
+              ListView.builder(itemCount: greatPlaces.placesList.length,
+                  itemBuilder: (context, index){
+                return ListTile(leading: CircleAvatar(
+                  backgroundImage: FileImage(greatPlaces.placesList[index].image!),
+                ),
+                    title: Text(greatPlaces.placesList[index].title!),
+                  onTap: (){
+                  //Go to details Page
+                  },
+                  contentPadding: EdgeInsets.all(10),
+                );
+                  })
 
+        ),
       )
     );
   }
