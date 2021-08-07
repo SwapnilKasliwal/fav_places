@@ -2,7 +2,7 @@ import 'dart:collection';
 import 'dart:io';
 import 'package:fav_places/models/place.dart';
 import 'package:flutter/foundation.dart';
-import 'dbHelper.dart';
+import 'helpers/dbHelper.dart';
 import 'models/place.dart';
 
 class GreatPlaces with ChangeNotifier{

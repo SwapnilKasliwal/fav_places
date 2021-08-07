@@ -1,5 +1,6 @@
 import 'package:fav_places/great_places.dart';
 import 'package:fav_places/models/image_input.dart';
+import 'package:fav_places/models/location_input.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:provider/provider.dart';
@@ -73,6 +74,9 @@ class _AddPlaceState extends State<AddPlace> {
                       height: 40,
                     ),
                     ImageInput(_selectedImage),
+
+                    SizedBox(height: 10,),
+                    LocationInput(),
 
                   ],
                 ),

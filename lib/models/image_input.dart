@@ -58,20 +58,27 @@ class _ImageInputState extends State<ImageInput> {
     ),
     Expanded(child: Column(
     children: <Widget>[
-      RaisedButton.icon(onPressed: _takePicture,
+      FlatButton.icon(onPressed: _takePicture,
         icon: Icon(
       Icons.camera
       ),
-      label: Text('Capture Image'),
+      label: Text('Capture Image',
+      style: TextStyle(
+        color: Theme.of(context).primaryColor,
+      ),
+      ),
       ),
       SizedBox(
         height: 10,
       ),
-      RaisedButton.icon(onPressed: _choosePicture,
+      FlatButton.icon(onPressed: _choosePicture,
         icon: Icon(
-            Icons.photo
+            Icons.photo,
         ),
-        label: Text('Choose From Gallery'),
+        label: Text('Choose From Gallery',
+          style: TextStyle(
+            color: Theme.of(context).primaryColor,
+          ),),
       ),
     ],
     ),
