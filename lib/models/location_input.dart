@@ -1,9 +1,14 @@
 import 'package:fav_places/helpers/location_helpers.dart';
+import 'package:fav_places/models/place.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
+import 'package:fav_places/screens/map_screen.dart';
 
 class LocationInput extends StatefulWidget {
-  const LocationInput({Key? key}) : super(key: key);
+
+  final Function onSelectPlace;
+  LocationInput(this.onSelectPlace);
 
   @override
   _LocationInputState createState() => _LocationInputState();
@@ -12,13 +17,41 @@ class LocationInput extends StatefulWidget {
 class _LocationInputState extends State<LocationInput> {
   String? _previewImageUrl;
 
-  Future<void> _getCurrentLocation() async{
-    final locData = await Location().getLocation();
+  void _showPreview(double lat, double long)
+  {
     final staticMapImageURl = LocationHelper.getLocationPreviewImage(
-        latitude: locData.latitude!, longitude: locData.longitude!);
+        latitude: lat, longitude: long);
     setState(() {
       _previewImageUrl = staticMapImageURl;
     });
+
+  }
+
+  Future<void> _getCurrentLocation() async{
+    try {
+      final locData = await Location().getLocation();
+      _showPreview(locData.latitude!, locData.longitude!);
+      widget.onSelectPlace(locData.latitude, locData.longitude);
+    }
+    catch(error)
+    {
+      return;
+    }
+  }
+  Future<void> _selectOnMap() async{
+    final locData = await Location().getLocation();
+    final PlaceLocation inLocation = PlaceLocation(latitude: locData.latitude, longitude: locData.longitude);
+    final LatLng selectedLocation = await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context)=>MapScreen(initialLocation: inLocation,
+            isSelecting: true,),
+        fullscreenDialog: true,
+        ));
+    if(selectedLocation == null)
+      return;
+    _showPreview(selectedLocation.latitude, selectedLocation.longitude);
+    widget.onSelectPlace(selectedLocation.latitude, selectedLocation.longitude);
   }
   @override
   Widget build(BuildContext context) {
@@ -51,7 +84,7 @@ class _LocationInputState extends State<LocationInput> {
                 style: TextStyle(color: Theme.of(context).primaryColor),
                 ),
             ),
-            FlatButton.icon(onPressed: (){}
+            FlatButton.icon(onPressed: _selectOnMap
               , icon: Icon(Icons.map),
               label: Text('Select on Map',
                 style: TextStyle(color: Theme.of(context).primaryColor),

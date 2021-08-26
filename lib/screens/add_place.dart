@@ -1,9 +1,11 @@
 import 'package:fav_places/great_places.dart';
 import 'package:fav_places/models/image_input.dart';
 import 'package:fav_places/models/location_input.dart';
+import 'package:fav_places/models/place.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:provider/provider.dart';
+import '';
 class AddPlace extends StatefulWidget {
 
   static const id = 'AddPlace';
@@ -15,18 +17,23 @@ class _AddPlaceState extends State<AddPlace> {
   final _priceFocusNode = FocusNode();
   final _titleController = TextEditingController();
   File? _pickedImage;
+  PlaceLocation? _pickedLocation;
 
   void _selectedImage(File pickedImage){
     _pickedImage = pickedImage;
   }
+  void _selectedPlace(double lat, double long)
+  {
+    _pickedLocation = PlaceLocation(latitude: lat, longitude: long);
+  }
 
   void _savePlace(){
-    if(_titleController.text.isEmpty || _pickedImage == null)
+    if(_titleController.text.isEmpty || _pickedImage == null || _pickedLocation == null)
       {
         return;
       }
     else{
-     Provider.of<GreatPlaces>(context, listen: false).addPlace(_titleController.text, _pickedImage!);
+     Provider.of<GreatPlaces>(context, listen: false).addPlace(_titleController.text, _pickedImage!, _pickedLocation!);
      Navigator.pop(context);
     }
 
@@ -76,7 +83,7 @@ class _AddPlaceState extends State<AddPlace> {
                     ImageInput(_selectedImage),
 
                     SizedBox(height: 10,),
-                    LocationInput(),
+                    LocationInput(_selectedPlace),
 
                   ],
                 ),

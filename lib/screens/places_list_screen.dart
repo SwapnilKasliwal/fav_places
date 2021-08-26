@@ -1,5 +1,6 @@
 import 'package:fav_places/great_places.dart';
 import 'package:fav_places/screens/add_place.dart';
+import 'package:fav_places/screens/place_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -13,16 +14,14 @@ class PlacesList extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('My Places',),
-        actions: <Widget>[
-          IconButton(
-              onPressed: (){
-                Navigator.pushNamed(context, AddPlace.id);
-              },
-              icon: Icon(
-                  Icons.add
-                  )
-              ),
-        ],
+      ),
+      floatingActionButton: FloatingActionButton(onPressed: (){
+        Navigator.pushNamed(context, AddPlace.id);
+      },
+      backgroundColor: Colors.amber,
+      child: Icon(
+        Icons.add
+      ),
       ),
       body: FutureBuilder(
         future: Provider.of<GreatPlaces>(context, listen: false).readAndFetchData(),
@@ -41,10 +40,14 @@ class PlacesList extends StatelessWidget {
                   backgroundImage: FileImage(greatPlaces.placesList[index].image!),
                 ),
                     title: Text(greatPlaces.placesList[index].title!),
+                  subtitle: Text(greatPlaces.placesList[index].location!.address!),
                   onTap: (){
-                  //Go to details Page
+                  Navigator.pushNamed(context, PlaceDetail.id,arguments: greatPlaces.placesList[index].id);
                   },
                   contentPadding: EdgeInsets.all(10),
+                  onLongPress: (){
+                  greatPlaces.deletePlace(greatPlaces.placesList[index]);
+                  },
                 );
                   })
 
