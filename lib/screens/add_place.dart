@@ -63,6 +63,7 @@ class _AddPlaceState extends State<AddPlace> {
                             hintText: 'Enter the place name',
                             hintStyle: TextStyle(
                               fontSize: 18,
+                              color: Colors.grey
                             ),
                             labelStyle: TextStyle(
                               fontSize: 20,

@@ -54,7 +54,10 @@ class _ImageInputState extends State<ImageInput> {
           fit: BoxFit.cover,
           width: double.infinity,) :
         Text('No Image Provided',
-        textAlign: TextAlign.center,)
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          color: Colors.grey
+        ),)
     ),
     Expanded(child: Column(
     children: <Widget>[

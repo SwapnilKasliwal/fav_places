@@ -68,7 +68,7 @@ class _LocationInputState extends State<LocationInput> {
               'No Location Provided',
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: Colors.black,
+              color: Colors.grey,
             ),
           ): Image.network(_previewImageUrl!,
             fit: BoxFit.cover,
